@@ -1,5 +1,12 @@
 from django.db import models
 
+
+class Planet(models.Model):
+    id = models.AutoField()
+    name = models.CharField(max_length=50)
+    size = models.IntegerField() # The size is the integer that defines the amount of latitudes and longitudes of the planet
+
+
 class Rover(models.Model):
     DIRECTION = [
         ('N', 'North'),
@@ -12,6 +19,7 @@ class Rover(models.Model):
     positionX = models.FloatField()
     positionY = models.FloatField()
     direction = models.CharField(choices=DIRECTION)
+    planet = models.ForeignKey(Planet, on_delete=models.CASCADE)
 
     def moveForward(self):
         print('Moving Forward')
@@ -75,3 +83,4 @@ class Obstacle(models.Model):
     name = models.CharField(max_length=50)
     positionX = models.FloatField()
     positionY = models.FloatField()
+    planet = models.ForeignKey(Planet, on_delete=models.CASCADE)
