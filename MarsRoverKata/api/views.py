@@ -18,5 +18,5 @@ def moveRoverApi(request, id=0):
                 return JsonResponse("Wrong sequence, must only contain l, r, f, b characters", safe=False, status=400)
 
         if not rover.followSequence(sequence):
-            return JsonResponse("Warning obstacle detected at position aborting sequence!", safe=False, status=409)
+            return JsonResponse("Warning obstacle detected aborting sequence!", safe=False, status=409)
         return JsonResponse("Rover reached destination Successfully!", safe=False)
