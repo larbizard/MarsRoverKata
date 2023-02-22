@@ -85,20 +85,25 @@ class Rover(models.Model):
             elif s == 'r':
                 self.turnRight()
             elif s == 'f':
-                self.moveForward()
+                if not self.moveForward():
+                    return False
             elif s == 'b':
-                self.moveBackward()
+                if not self.moveBackward():
+                    return False
             else:
                 raise FieldError
+        return True
 
     def moveForward(self):
         print('Moving Forward')
         (x, y) = self.getNextPosition(True)
         if self.checkForObstacle((x, y)):
             print(f'Warning obstacle detected at position ({x}, {y}) aborting sequence!')
+            return False
         else:
             self.positionX = x
             self.positionY = y
+            return True
 
 
             
@@ -107,9 +112,11 @@ class Rover(models.Model):
         (x, y) = self.getNextPosition(False)
         if self.checkForObstacle((x, y)):
             print(f'Warning obstacle detected at position ({x}, {y}) aborting sequence!')
+            return False
         else:
             self.positionX = x
             self.positionY = y
+            return True
 
 
     def turnLeft(self):

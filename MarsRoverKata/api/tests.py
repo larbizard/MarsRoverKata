@@ -3,6 +3,7 @@ from .models import Planet
 from .models import Rover
 from .models import Obstacle
 
+from rest_framework.test import APIClient
 
 class RoverTestCase(TestCase):
     def setUp(self):
@@ -56,3 +57,15 @@ class RoverTestCase(TestCase):
         print(f'Arriving position: ({rover.positionX}, {rover.positionY}) direction {rover.direction}')
         self.assertEqual(rover.positionX, 3)
         self.assertEqual(rover.positionY, 4)
+
+    def test_request_rover_moving(self):
+        client = APIClient()
+        rover = Rover.objects.get(name="Wall-e")
+        response = client.post(f'/move/{rover.pk}', {'sequence': 'lfffrbb'}, format='json')
+        assert response.status_code == 200
+
+    def test_request_rover_moving_conflict_with_obstacle(self):
+        client = APIClient()
+        rover = Rover.objects.get(name="Perseverance")
+        response = client.post(f'/move/{rover.pk}', {'sequence': 'llffrbb'}, format='json')
+        assert response.status_code == 409
