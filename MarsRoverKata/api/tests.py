@@ -61,6 +61,12 @@ class RoverTestCase(TestCase):
     def test_request_rover_moving(self):
         client = APIClient()
         rover = Rover.objects.get(name="Wall-e")
+        response = client.post(f'/move/{rover.pk}', {'sequence': 'leffrbb'}, format='json')
+        assert response.status_code == 400
+
+    def test_request_rover_moving(self):
+        client = APIClient()
+        rover = Rover.objects.get(name="Wall-e")
         response = client.post(f'/move/{rover.pk}', {'sequence': 'lfffrbb'}, format='json')
         assert response.status_code == 200
 
